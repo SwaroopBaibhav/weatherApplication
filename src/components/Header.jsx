@@ -9,7 +9,7 @@ function Header() {
                 <p></p>
                 <img src="src\assets\sun.png" className='aspect-square h-12 ml-10' alt="" />
             </div>
-            <div id='NavigationLinks' className='flex justify-around w-2/3'>
+            <div id='NavigationLinks' className='flex mx-10 justify-around w-2/3'>
                 <div className='hover:scale-105 hover:bg-orange-400 hover:ease-in duration-100 p-1.5 rounded-lg'>
                 <a href="">Get Latitude and Longitude</a>
                 </div>
