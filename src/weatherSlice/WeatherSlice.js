@@ -10,19 +10,30 @@ const weatherSlice = createSlice({
     initialState,
     reducers: {
         addCurrentWeatherData: (state, action) => {
-            const data = {
-                id: action.payload.name,
-                weatherToday: action.payload,
+            const city = action.payload.name.toLowerCase();
+            if (!state.currentWeatherData[city]){
+                state.currentWeatherData[city] = action.payload
             }
-            action.payload.id !== undefined ? (state.currentWeatherData[action.payload.id] = data) : null;
-            
         },
         addForecastWeatherData: (state, action) => {
-            const data = {
-                id: action.payload.city.name,
-                weatherForecast: action.payload,
-            }
-            state.forecastWeatherData[data.id] = data;
+            let mainData = {};
+            action.payload.list.map((e) => {
+                const day = new Date(e.dt * 1000).toLocaleString('en-US', { weekday: 'long' });                
+                if (!mainData[day]){
+                    mainData[day] = {
+                        sum: 0,
+                        count: 0,
+                    };
+                }
+                mainData[day].sum += e.main.temp;
+                mainData[day].count += 1;
+            })
+
+            Object.keys(mainData).forEach((day) => {
+                mainData[day].average = mainData[day].sum / mainData[day].count;
+            });
+            // let data = Object.values(mainData).map((e) => e.average)
+            state.forecastWeatherData = mainData;
         }
     }
 })

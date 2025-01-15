@@ -1,5 +1,6 @@
 import React from "react";
 import { Line } from "react-chartjs-2";
+import { useSelector } from "react-redux";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -22,34 +23,43 @@ ChartJS.register(
   Legend
 );
 
-const data = {
-  labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug"], // x-axis labels
-  datasets: [
-    {
-      data: [65, 59, 80, 81, 56, 55, 40, 70], // y-axis values
-      borderColor: 'red', // Line color
-      tension: 0.2,
-    },
-  ],
-};
-
-const options = {
-  responsive: true,
-  plugins: {
-    legend: {
-      position: "top",
-    },
-    tooltip: {
-      enabled: true,
-    },
-  },
-  animation: {
-    duration: 2000, // Total animation duration (ms)
-    easing: "easeInOutQuart",
-  },
-};
-
 function LinePlot() {
+  const dates = useSelector((state) => state.forecastWeatherData)
+  // console.log(dates);
+  
+  let dayLabels = []
+  let temperature = []
+  Object.entries(dates).forEach(([date, data]) => {
+    dayLabels.push(date);
+    temperature.push(data.average);
+  });
+  // console.log(dayLabels);
+  // console.log(temperature);
+  
+  const data = {
+    labels: dayLabels, // x-axis labels
+    datasets: [
+      {
+        data: temperature, // y-axis values
+        borderColor: 'red', // Line color
+        tension: 0.2,
+      },
+    ],
+  };
+  
+  const options = {
+    responsive: true,
+    plugins: {
+      tooltip: {
+        enabled: true,
+      },
+    },
+    animation: {
+      duration: 2000, // Total animation duration (ms)
+      easing: "easeInOutQuart",
+    },
+  };
+  
   return (
     <div>
         <div className="w-full">

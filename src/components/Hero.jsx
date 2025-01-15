@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useForm } from 'react-hook-form'
+import { get, useForm } from 'react-hook-form'
 import NavCards from './NavCards';
 import { addCurrentWeatherData, addForecastWeatherData } from '../weatherSlice/WeatherSlice';
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,19 +9,38 @@ function Hero() {
     const {register, handleSubmit, getValues} = useForm();
     const apiKey = import.meta.env.VITE_openWeather_APIKey;
     const dispatch = useDispatch();
+    const [city, setCity] = useState('')
     
-    const setCurrentWeather = async(city) => {
-        try {
-            const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`);
-            const data = await response.json();
-            dispatch(addCurrentWeatherData(data))
-        } catch (error) {
-            console.log('Error :: get weather error :: ' + error);
-        }
+    
+    const setForecastWeather = (city) => {
+        (async function setWeather(){
+            try {
+                const response = await fetch(`http://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}&units=metric`);
+                const data = await response.json();
+                dispatch(addForecastWeatherData(data))
+            } catch (error) {
+                console.log('Error :: set forecast weather error :: ' + error);
+            }
+        })() 
+    }
+    
+    const setCurrentWeather = (city) => {
+        setCity(city);
+        (async function setWeather(){
+            try {
+                const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`);
+                const data = await response.json();
+                dispatch(addCurrentWeatherData(data))
+            } catch (error) {
+                console.log('Error :: set weather error :: ' + error);
+            }
+        })()
+        setForecastWeather(city);
     }
 
     const currentWeatherData = useSelector((state) => state.currentWeatherData)
-    console.log(currentWeatherData);
+    // console.log(city);
+    // console.log(currentWeatherData);
 
     return (
     <div className='w-full h-screen text-center text-white items-center bg-slate-900 flex'>
@@ -42,12 +61,20 @@ function Hero() {
                     >
                     Submit
                     </button>
+                    {(currentWeatherData[city] && getValues().city) ? (
+                    <div className='justify-center'>
+                        <h1 className='text-3xl font-extrabold'>{getValues().city.charAt(0).toUpperCase() + getValues().city.slice(1)}</h1>
+                        <img className='m-auto my-0 py-0' src={`https://openweathermap.org/img/wn/${currentWeatherData[city].weather[0].icon}@2x.png`} alt="" />
+                        {/* <h1 className='text-2xl'><i>{currentWeatherData[city].weather[0].main}</i></h1> */}
+                        <h1 className='text-3xl font-extrabold'>Temperature: {currentWeatherData[city].main.temp} <sup>o</sup>C</h1>
+                        <h1 className='text-3xl font-extrabold'>Humidity: {currentWeatherData[city].main.humidity}</h1>
+                    </div>
+                    ) : (
+                        <h1 className='text-3xl font-extrabold'>Enter Valid City, not state or any landmarks.</h1>
+                    )}
                 </form>
             </div>
         </div>
-
-        <NavCards props={{bottom:'red', top: 'yellow'}}/>
-
     </div>
   )
 }

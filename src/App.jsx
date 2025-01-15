@@ -8,13 +8,12 @@ import { store } from './store/Store'
 
 function App() {
   
-  const data = [10, 20, 30, 40, 50];  // Example data array
 
   return (
     <Provider store={store} className='flex flex-col'>
       <Header />
       <Hero />
-      <WeatherChart data={data}/>
+      <WeatherChart />
     </Provider>
   )
 }
