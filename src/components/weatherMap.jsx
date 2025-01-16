@@ -6,7 +6,14 @@ const MapChart = () => {
     const apiKey = import.meta.env.VITE_openWeather_APIKey;
 
     const getTemp = async(state) => {
-        await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${state}&appid=${apiKey}&units=metric`)
+      try {
+        const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${state}&appid=${apiKey}&units=metric`)
+        const data = await response.json()
+        return data.main?.temp || 'N/A';
+      } catch (error) {
+        // console.log(`getTemp :: error :: ${error}`);
+        return 'N/A';
+      }
     }
 
     const states = [
@@ -53,44 +60,42 @@ const MapChart = () => {
             const temps = {};
             for (const state of states){
                 try {
-                    data = await getTemp(state).json()
-                    temps[state] = getTemp(state).main?.temp
-                } catch (error) {
+                    const data = await getTemp(state);
+                    if (!temps[state]){
+                      temps[state] = data
+                    }
+                  } catch (error) {
                     temps[state] = 'N/A'
+                  }
                 }
-            }
-            setTempData(temps)
-        }
-        fetchTemp()
-      })
+                setTempData(temps)
+              }
+              fetchTemp()
+            }, [apiKey])
 
   return (
-    <div style={{ position: "relative" }}>
-      <DatamapsIndia
-        regionData={tempData}
-        hoverComponent={({ value }) => {
-          return (
+    <div className="h-full bg-red-200 w-full">
+      <div className="relative m-auto w-1/2 bg-blend-multiply bg-fuchsia-200">
+        <DatamapsIndia
+          regionData={tempData}
+          hoverComponent={({ value }) => {
+            const temp = tempData[value.name];
+            return(
             <div>
-              <div>
-                {value.name} {value.value} OCs
-              </div>
+              <strong>{value.name}</strong>: {temp}°C
             </div>
-          );
-        }}
-        mapLayout={{
-          title: "Average temperature in India",
-          legendTitle: "Number of OCs",
-          startColor: "#b3d1ff",
-          endColor: "#005ce6",
-          hoverTitle: "Count",
-          noDataColor: "red",
-          borderColor: "#8D8D8D",
-          hoverColor: "blue",
-          hoverBorderColor: "green",
-          height: 10,
-          weight: 30,
-        }}
-      />
+          )}}
+          mapLayout={{
+            startColor: "green",
+            endColor: "#005ce6",
+            hoverTitle: "Count",
+            noDataColor: "red",
+            borderColor: "#8D8D8D",
+            hoverColor: "blue",
+            hoverBorderColor: "green",
+          }}
+        />
+      </div>
     </div>
   );
 };

@@ -4,7 +4,7 @@ import Header from './components/Header'
 import WeatherChart from './components/weatherChart'
 import { Provider } from 'react-redux'
 import { store } from './store/Store'
-import MapChart from './components/weatherMap'
+import MapChart from './components/WeatherMap'
 
 function App() {
   

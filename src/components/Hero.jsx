@@ -39,10 +39,10 @@ function Hero() {
 
     const currentWeatherData = useSelector((state) => state.currentWeatherData)
     // console.log(city);
-    // console.log(currentWeatherData);
+    console.log(currentWeatherData);
 
     return (
-    <div className='w-full h-screen text-center text-white items-center bg-slate-900 flex'>
+    <div className='w-full h-screen text-center text-white items-center flex'>
         <div id='leftSide' className='w-2/4'>
             <h3 className="text-6xl md:text-8xl font-extrabold bg-clip-text text-transparent bg-[linear-gradient(to_right,theme(colors.indigo.400),theme(colors.indigo.100),theme(colors.sky.400),theme(colors.fuchsia.400),theme(colors.sky.400),theme(colors.indigo.100),theme(colors.indigo.400))] bg-[length:200%_auto] animate-gradient overflow-visible">Weather At Your <br />Fingertips !</h3>
         </div>

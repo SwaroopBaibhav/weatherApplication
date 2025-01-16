@@ -7,9 +7,7 @@ import {
   LinearScale,
   LineElement,
   PointElement,
-  Title,
-  Tooltip,
-  Legend,
+  Tooltip
 } from "chart.js";
 
 // Register Chart.js components
@@ -18,9 +16,7 @@ ChartJS.register(
   LinearScale,
   LineElement,
   PointElement,
-  Title,
-  Tooltip,
-  Legend
+  Tooltip
 );
 
 function LinePlot() {
@@ -41,7 +37,7 @@ function LinePlot() {
     datasets: [
       {
         data: temperature, // y-axis values
-        borderColor: 'red', // Line color
+        borderColor: 'white', // Line color
         tension: 0.2,
       },
     ],
@@ -50,9 +46,9 @@ function LinePlot() {
   const options = {
     responsive: true,
     plugins: {
-      tooltip: {
-        enabled: true,
-      },
+      // tooltip: {
+      //   enabled: true,
+      // },
     },
     animation: {
       duration: 2000, // Total animation duration (ms)
