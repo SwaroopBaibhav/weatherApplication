@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { get, useForm } from 'react-hook-form'
-import NavCards from './NavCards';
 import { addCurrentWeatherData, addForecastWeatherData } from '../weatherSlice/WeatherSlice';
 import { useDispatch, useSelector } from 'react-redux';
 

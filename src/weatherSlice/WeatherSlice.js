@@ -32,7 +32,6 @@ const weatherSlice = createSlice({
             Object.keys(mainData).forEach((day) => {
                 mainData[day].average = mainData[day].sum / mainData[day].count;
             });
-            // let data = Object.values(mainData).map((e) => e.average)
             state.forecastWeatherData = mainData;
         }
     }
