@@ -3,6 +3,7 @@ import { createSlice, nanoid } from "@reduxjs/toolkit";
 const initialState = {
     currentWeatherData: {},
     forecastWeatherData: {},
+    currentCity: '',
 }
 
 const weatherSlice = createSlice({
@@ -10,8 +11,8 @@ const weatherSlice = createSlice({
     initialState,
     reducers: {
         addCurrentWeatherData: (state, action) => {
-            const city = action.payload.name.toLowerCase();
-            if (!state.currentWeatherData[city]){
+            const city = action.payload.name;
+            if (!state.currentWeatherData[city] && city !== undefined){
                 state.currentWeatherData[city] = action.payload
             }
         },
@@ -33,10 +34,14 @@ const weatherSlice = createSlice({
                 mainData[day].average = mainData[day].sum / mainData[day].count;
             });
             state.forecastWeatherData = mainData;
+        },
+        addCurrentCity: (state, action) => {
+            state.currentCity = '';
+            state.currentCity = action.payload.name;
         }
     }
 })
 
-export const {addCurrentWeatherData, addForecastWeatherData} = weatherSlice.actions;
+export const {addCurrentWeatherData, addForecastWeatherData, addCurrentCity} = weatherSlice.actions;
 
 export default weatherSlice.reducer;

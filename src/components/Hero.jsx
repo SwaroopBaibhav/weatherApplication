@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { get, useForm } from 'react-hook-form'
-import { addCurrentWeatherData, addForecastWeatherData } from '../weatherSlice/WeatherSlice';
+import { addCurrentWeatherData, addForecastWeatherData, addCurrentCity } from '../weatherSlice/WeatherSlice';
 import { useDispatch, useSelector } from 'react-redux';
 
 function Hero() {
@@ -24,12 +24,14 @@ function Hero() {
     }
     
     const setCurrentWeather = (city) => {
-        setCity(city);
+        setCity(city.charAt(0).toUpperCase() + city.slice(1));
+        console.log(city);
         (async function setWeather(){
             try {
                 const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=metric`);
                 const data = await response.json();
                 dispatch(addCurrentWeatherData(data))
+                dispatch(addCurrentCity(data))
             } catch (error) {
                 console.log('Error :: set weather error :: ' + error);
             }
@@ -38,7 +40,6 @@ function Hero() {
     }
 
     const currentWeatherData = useSelector((state) => state.currentWeatherData)
-    // console.log(city);
     console.log(currentWeatherData);
 
     return (
@@ -77,5 +78,4 @@ function Hero() {
     </div>
   )
 }
-
 export default Hero;

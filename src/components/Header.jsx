@@ -2,7 +2,7 @@ import React from 'react'
 
 function Header() {
   return (
-    <div className='sticky top-0'>
+    <div className='sticky top-0 z-20'>
         <header>
             <nav className='flex justify-around p-5 bg-gradient-to-r from-orange-400 to-blue-400 items-center'>
             <div id='LogoImage' className='w-1/3'>

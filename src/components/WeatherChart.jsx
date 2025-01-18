@@ -7,7 +7,7 @@ import {
   LinearScale,
   LineElement,
   PointElement,
-  Tooltip
+  Tooltip,
 } from "chart.js";
 
 // Register Chart.js components
@@ -39,6 +39,8 @@ function LinePlot() {
         data: temperature, // y-axis values
         borderColor: 'white', // Line color
         tension: 0.2,
+        backgroundColor: 'green',
+        color: 'white'
       },
     ],
   };
@@ -46,22 +48,42 @@ function LinePlot() {
   const options = {
     responsive: true,
     plugins: {
-      // tooltip: {
-      //   enabled: true,
-      // },
+      tooltip: {
+        enabled: true,
+        bodyColor: 'white',
+        padding: 15,
+        weight: 'bolder'
+      },
+      colors: {
+        enabled: true,
+        forceOverride: true
+      },
     },
     animation: {
-      duration: 2000, // Total animation duration (ms)
+      duration: 1000, // Total animation duration (ms)
       easing: "easeInOutQuart",
     },
   };
+
+  const city = useSelector((state) => state.currentCity)  
   
   return (
     <div>
-        <div className="w-full">
-            <Line data={data} options={options} />
+      <div className="w-full flex items-center justify-between text-white p-8 gap-5">
+        <div className="w-1/3 relative">
+          <div className="absolute inset-0 flex justify-center items-center z-0">
+            <div className="h-60 bg-blue-400 rounded-lg skew-y-12 w-full max-w-xs"></div>
+          </div>
+          <h2 className="relative text-5xl font-extrabold font-sans z-10">
+            Here's the 5-Day Forecast Report of {city}
+          </h2>
         </div>
+        <div className="w-2/3">
+          <Line data={data} options={options} />
+        </div>
+      </div>
     </div>
+
   );
 }
 
