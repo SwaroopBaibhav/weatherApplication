@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { get, useForm } from 'react-hook-form'
 import { addCurrentWeatherData, addForecastWeatherData, addCurrentCity } from '../weatherSlice/WeatherSlice';
 import { useDispatch, useSelector } from 'react-redux';
@@ -9,6 +9,42 @@ function Hero() {
     const apiKey = import.meta.env.VITE_openWeather_APIKey;
     const dispatch = useDispatch();
     const [city, setCity] = useState('')
+    
+
+    useEffect(() => {
+        const getUserLocation = () => {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    async (position) => {
+                        const userPosition = {
+                            Latitude: position.coords.latitude,
+                            Longitude: position.coords.longitude,
+                        };
+                        console.log("User Position:", userPosition); // Logs the location to the console
+
+                        try {
+                            const response = await fetch(
+                                `https://api.openweathermap.org/data/2.5/weather?lat=${userPosition.Latitude}&lon=${userPosition.Longitude}&appid=${apiKey}&units=metric`
+                            );
+                            const data = await response.json();
+                            console.log(data);
+                            dispatch(addForecastWeatherData(data)); // Dispatch the weather data to Redux
+                        } catch (error) {
+                            console.error("Error fetching weather data:", error);
+                        }
+                    },
+                    (error) => {
+                        console.error("Error fetching location:", error);
+                        alert('Failed to get location. Please enable location services.');
+                    }
+                );
+            } else {
+                alert('Geolocation is not supported in this browser!!!');
+            }
+        };
+
+        getUserLocation(); // Call the function to get user location
+    }, [apiKey, dispatch]);
     
     
     const setForecastWeather = (city) => {

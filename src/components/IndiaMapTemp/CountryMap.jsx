@@ -137,7 +137,7 @@ const CountryMap = () => {
   return (
     <div className='w-full flex items-center justify-around text-white p-8'>
       <div className="full-width-height container p-8">
-        <Tooltip>{tooltipContent}</Tooltip>
+        <Tooltip data-tooltip-content={tooltipContent}></Tooltip>
         <ComposableMap
           projectionConfig={PROJECTION_CONFIG}
           projection="geoMercator"
@@ -164,12 +164,15 @@ const CountryMap = () => {
           </Geographies>
         </ComposableMap>
       </div>
-      <div className='w-1/3'>
-        <h2 className='text-5xl font-extrabold font-sans'>
-          And the Average Temperature all over of India
-        </h2>
+      <div className="w-1/3 relative">
+            <div className="absolute inset-0 flex justify-center z-0">
+              <div className="h-60 bg-blue-400 rounded-lg skew-x-12 w-full max-w-xs"></div>
+            </div>
+              <h2 className="relative text-5xl font-extrabold font-sans z-10">
+                And the Average Temperature all over of India
+              </h2>
+          </div>
       </div>
-    </div>
   );
 };
 
