@@ -20,17 +20,15 @@ ChartJS.register(
 );
 
 function LinePlot() {
-  const dates = useSelector((state) => state.forecastWeatherData)
-  // console.log(dates);
+  const dates = useSelector((state) => state.forecastWeatherData);
   
-  let dayLabels = []
-  let temperature = []
+  let dayLabels = [];
+  let temperature = [];
+  
   Object.entries(dates).forEach(([date, data]) => {
     dayLabels.push(date);
     temperature.push(data.average);
   });
-  // console.log(dayLabels);
-  // console.log(temperature);
   
   const data = {
     labels: dayLabels, // x-axis labels
@@ -40,11 +38,11 @@ function LinePlot() {
         borderColor: 'white', // Line color
         tension: 0.2,
         backgroundColor: 'green',
-        color: 'white'
+        color: 'white',
       },
     ],
   };
-  
+
   const options = {
     responsive: true,
     plugins: {
@@ -52,11 +50,11 @@ function LinePlot() {
         enabled: true,
         bodyColor: 'white',
         padding: 15,
-        weight: 'bolder'
+        weight: 'bolder',
       },
       colors: {
         enabled: true,
-        forceOverride: true
+        forceOverride: true,
       },
     },
     animation: {
@@ -65,25 +63,24 @@ function LinePlot() {
     },
   };
 
-  const city = useSelector((state) => state.currentCity)  
-  
+  const city = useSelector((state) => state.currentCity);  
+
   return (
-    <div>
-      <div className="w-full flex items-center justify-between text-white p-8 gap-5">
-        <div className="w-1/3 relative">
+    <div className="w-full p-4 md:p-8 text-white">
+      <div className="flex flex-col md:flex-row items-center justify-between gap-5">
+        <div className="w-full md:w-1/3 relative">
           <div className="absolute inset-0 flex justify-center items-center z-0">
             <div className="h-60 bg-blue-400 rounded-lg skew-y-12 w-full max-w-xs"></div>
           </div>
-          <h2 className="relative text-5xl font-extrabold font-sans z-10">
+          <h2 className="relative text-4xl md:text-5xl font-extrabold font-sans z-10 text-center md:text-left">
             Here's the 5-Day Forecast Report of {city}
           </h2>
         </div>
-        <div className="w-2/3">
+        <div className="w-full md:w-2/3">
           <Line data={data} options={options} />
         </div>
       </div>
     </div>
-
   );
 }
 
